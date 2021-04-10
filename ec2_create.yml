@@ -15,7 +15,7 @@
          dest: ./my_keypair.pem
        when: keyout.changed  
 
-     - name: test ec2 instances
+     - name: Create ec2 instances
        ec2:
          key_name: my_key
          instance_type: {{instance_type}}
