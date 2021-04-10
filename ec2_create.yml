@@ -1,0 +1,37 @@
+- hosts: localhost
+  gather_facts: false
+  tasks:
+     
+     - name: create EC2-pair
+       ec2_key:
+         name: my_key
+         region: us-east-1
+       register: keyout
+     - debug:
+         var: keyout
+     - name: Save Private Key
+       copy:
+         content: "{{keyout.key.private_key}}"
+         dest: ./my_keypair.pem
+       when: keyout.changed  
+
+     - name: test ec2 instances
+       ec2:
+         key_name: my_key
+         instance_type: {{instance_type}}
+         #image: ami-0742b4e673072066f
+         image: ami-0742b4e673072066g
+         wait: yes
+         instance_tags:
+           Name: vpro-web01
+           project: vprofile
+     # exact_count is used to launch no of instances
+         exact_count: 1
+     # count_tag is used to prevent creating same instances multiple time
+         count_tag:
+            Name: vpro-web01
+            project: vprofile
+         region: us-east-1
+     # tags is used to run specific tasks inside the playbook
+       tags:
+         - packages
