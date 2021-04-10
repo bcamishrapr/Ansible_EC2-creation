@@ -11,3 +11,6 @@ This Playbook is used to install EC2-instance in us-east-1 region.
 == export AWS_SECRET_ACCESS_KEY='irgg'
 
 Note:-- key-pair should be in same region in which instances is going to create.
+--TO Run specific Tasks inside the playbook we use tags which should be already defined in playbook.
+
+==> ansible-playbook ec2_create.yml --tags "packages"
